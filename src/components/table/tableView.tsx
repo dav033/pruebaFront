@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import "../../styles/table.css";
 
 interface Props {
@@ -11,9 +12,18 @@ interface Props {
   }[];
 
   getClient: (id: number) => string | undefined;
+
+  getData: (info: any) => void;
 }
 export default function TableView(props: Props) {
-  const { invoices, getClient } = props;
+  const { invoices, getClient, getData } = props;
+
+  // const [data, setData] = useState<any>(null);
+
+  // useEffect(() => {
+  //   console.log(data);
+  // }, [data]);
+
   return (
     <table className="table">
       <thead>
@@ -27,35 +37,12 @@ export default function TableView(props: Props) {
         </tr>
       </thead>
       <tbody>
-        {/* <tr>
-          <td data-label="Consola">Play Station 3</td>
-          <td data-label="Precio">$8000</td>
-          <td data-label="Ventas">800000</td>
-          <td data-label="Fecha de lanzamiento">10/01/2012</td>
-          <td data-label="Discount">10%</td>
-          <td data-label="Total">100</td>
-        </tr>
-        <tr>
-          <td data-label="Consola">Play Station 3</td>
-          <td data-label="Precio">$8000</td>
-          <td data-label="Ventas">800000</td>
-          <td data-label="Fecha de lanzamiento">10/01/2012</td>
-          <td data-label="Discount">10%</td>
-          <td data-label="Total">100</td>
-        </tr>
-        <tr>
-          <td data-label="Consola">Play Station 3</td>
-          <td data-label="Precio">$8000</td>
-          <td data-label="Ventas">800000</td>
-          <td data-label="Fecha de lanzamiento">10/01/2012</td>
-          <td data-label="Discount">10%</td>
-          <td data-label="Total">100</td>
-        </tr> */}
-
         {invoices.map((invoice) => {
           return (
             <tr key={invoice.invoiceId}>
-              <td data-label="Invoice Number">{invoice.invoiceId}</td>
+              <td data-label="Invoice Number" onClick={() => getData(invoice)}>
+                {invoice.invoiceId}
+              </td>
               <td data-label="Client">
                 {getClient(parseInt(invoice.clientId))}
               </td>

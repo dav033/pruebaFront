@@ -1,49 +1,52 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import TableView from "./tableView";
+import "../../styles/table.scss";
 
-export default function Table() {
-  const [invoices, setInvoices] = useState<
-    {
-      clientId: string;
-      date: string;
-      discount: number;
-      invoiceId: number;
-      subtotal: number;
-      total: number;
-    }[]
-  >([]);
+interface Props {
+  invoices: {
+    clientId: string;
+    date: string;
+    discount: number;
+    invoiceId: number;
+    subtotal: number;
+    total: number;
+  }[];
 
-  const [clients, setClients] = useState<
-    {
-      idClient: number;
-      ClientName: string;
-      contactPoint: string;
-      PhoneNumber: string;
-      Email: string;
-    }[]
-  >([]);
+  getClient: (id: number) => string | undefined;
 
-  useEffect(() => {
-    async function getData() {
-      const response = await axios.get("http://localhost:4000/invoices");
+  getData: (info: any) => void;
+}
 
-      const responseClients = await axios.get(`http://localhost:4000/clients`);
-
-      setClients(responseClients.data);
-
-      setInvoices(response.data);
-    }
-
-    getData();
-  }, []);
-
-  const getClient = (id: number) => {
-    const client = clients.find((item) => item.idClient === id);
-    console.log(clients)
-    console.log(id)
-    return client?.ClientName;
-  };
-
-  return <TableView invoices={invoices} getClient={getClient} />;
+export default function Table(props: Props) {
+  const { invoices, getData, getClient } = props;
+  return (
+    <table className="table">
+      <thead>
+        <tr>
+          <th>Invoice Number</th>
+          <th>Client</th>
+          <th>Date</th>
+          <th>Subtotal</th>
+          <th>Discount</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {invoices.map((invoice) => {
+          return (
+            <tr key={invoice.invoiceId}>
+              <td data-label="Invoice Number" onClick={() => getData(invoice)}>
+                {invoice.invoiceId}
+              </td>
+              <td data-label="Client">
+                {getClient(parseInt(invoice.clientId))}
+              </td>
+              <td data-label="Date">{invoice.date}</td>
+              <td data-label="Subtotal">{invoice.subtotal}</td>
+              <td data-label="Discount">{invoice.discount}%</td>
+              <td data-label="Total">{invoice.total}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
 }

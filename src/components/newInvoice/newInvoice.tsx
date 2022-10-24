@@ -41,9 +41,11 @@ export default function NewInvoice(props: Props) {
   useEffect(() => {
     async function getData() {
       const responseProducts = await axios.get(
-        "http://localhost:4000/products"
+        `${process.env.REACT_APP_HOST}products`
       );
-      const responseClients = await axios.get("http://localhost:4000/clients");
+      const responseClients = await axios.get(
+        `${process.env.REACT_APP_HOST}clients`
+      );
 
       setProducts(responseProducts.data);
       setClients(responseClients.data);
@@ -165,37 +167,51 @@ export default function NewInvoice(props: Props) {
   async function onSubmit(data: Form) {
     const { discount, clientId, date } = data;
 
-    //const date = new Date(ml).toDateString();
+    console.log(date);
 
-    let subtotal = 0;
+    if (date.toString() === "" || invoiceProducts.length < 1) {
+      if (date.toString() === "" && invoiceProducts.length > 0)
+        alert("Add a date");
 
-    invoiceProducts.forEach((item) => {
-      const ret = parseInt(item.product.productPrice) * item.quantity;
+      if (invoiceProducts.length < 1 && date.toString() !== "")
+        alert("Add any product");
 
-      subtotal += ret;
-    });
+      if (date.toString() === "" && invoiceProducts.length < 1) {
+        alert("Complete all fields");
+      }
+    } else {
+      //const date = new Date(ml).toDateString();
 
-    const total = subtotal - subtotal * (discount / 100);
+      let subtotal = 0;
 
-    console.log({
-      date,
-      subtotal,
-      discount,
-      total,
-      clientId,
-      invoiceProducts,
-    });
+      invoiceProducts.forEach((item) => {
+        const ret = parseInt(item.product.productPrice) * item.quantity;
 
-    await axios.post("http://localhost:4000/invoices", {
-      clientId,
-      date,
-      discount,
-      total,
-      subtotal,
-      products: invoiceProducts,
-    });
+        subtotal += ret;
+      });
 
-    close();
+      const total = subtotal - subtotal * (discount / 100);
+
+      console.log({
+        date,
+        subtotal,
+        discount,
+        total,
+        clientId,
+        invoiceProducts,
+      });
+
+      await axios.post("http://localhost:4000/invoices", {
+        clientId,
+        date,
+        discount,
+        total,
+        subtotal,
+        products: invoiceProducts,
+      });
+
+      close();
+    }
   }
 
   useEffect(() => {

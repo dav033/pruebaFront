@@ -114,20 +114,24 @@ export default function NewInvoice(props: Props) {
             <div className="inputsCont">
               <div>
                 <label>Products</label>
-                <select id="productsSelect">
-                  {products.map((product) => {
-                    return (
-                      <option key={product.idProduct} value={product.idProduct}>
-                        {product.productName}
-                      </option>
-                    );
-                  })}
-                </select>
+                <div>
+                  <select id="productsSelect">
+                    {products.map((product) => {
+                      return (
+                        <option
+                          key={product.idProduct}
+                          value={product.idProduct}
+                        >
+                          {product.productName}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <button type="button" onClick={() => addProduct()}>
+                    Add
+                  </button>
+                </div>
               </div>
-
-              <button type="button" onClick={() => addProduct()}>
-                Add
-              </button>
             </div>
             <ProductsList
               invoiceProducts={invoiceProducts}
