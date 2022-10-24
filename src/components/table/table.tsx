@@ -1,5 +1,5 @@
 import "../../styles/table.scss";
-
+import { AiFillInfoCircle } from "react-icons/ai";
 interface Props {
   invoices: {
     clientId: string;
@@ -17,7 +17,7 @@ interface Props {
 
 export default function Table(props: Props) {
   const { invoices, getData, getClient } = props;
-  return (
+  return invoices.length > 0 ? (
     <table className="table">
       <thead>
         <tr>
@@ -27,15 +27,14 @@ export default function Table(props: Props) {
           <th>Subtotal</th>
           <th>Discount</th>
           <th>Total</th>
+          <th>Info</th>
         </tr>
       </thead>
       <tbody>
         {invoices.map((invoice) => {
           return (
             <tr key={invoice.invoiceId}>
-              <td data-label="Invoice Number" onClick={() => getData(invoice)}>
-                {invoice.invoiceId}
-              </td>
+              <td data-label="Invoice Number">{invoice.invoiceId}</td>
               <td data-label="Client">
                 {getClient(parseInt(invoice.clientId))}
               </td>
@@ -43,10 +42,16 @@ export default function Table(props: Props) {
               <td data-label="Subtotal">{invoice.subtotal}</td>
               <td data-label="Discount">{invoice.discount}%</td>
               <td data-label="Total">{invoice.total}</td>
+              <td data-label="Info">
+                <AiFillInfoCircle
+                  style={{ fontSize: "20px", cursor: "pointer" }}
+                  onClick={() => getData(invoice)}
+                />
+              </td>
             </tr>
           );
         })}
       </tbody>
     </table>
-  );
+  ) : null;
 }

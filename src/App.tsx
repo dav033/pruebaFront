@@ -12,6 +12,7 @@ import { idText } from "typescript";
 import Navbar from "./components/navbar";
 import "./styles/newInvoice.scss";
 import dotenv from "dotenv";
+import { set } from "react-hook-form";
 
 function App() {
   const { show, close, open } = useShow();
@@ -30,11 +31,15 @@ function App() {
 
   const [products, setProducts] = useState<any>([]);
 
-  // const getData = (info: any) => setData(info);
+  const [updateData, setUpdateData] = useState<boolean>(false);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const handleUpdateData = () => {
+    if (updateData) {
+      setUpdateData(false);
+    } else {
+      setUpdateData(true);
+    }
+  };
 
   useEffect(() => {
     async function getData() {
@@ -55,8 +60,12 @@ function App() {
       setProducts(responseProducts.data);
     }
 
+    if(!updateData){
+      getData()
+    }
+
     getData();
-  }, []);
+  }, [updateData]);
 
   const openDetails = (info: any) => {
     setData(info);
@@ -92,7 +101,11 @@ function App() {
           New Invoice
         </button>
       </div>
-      <NewInvoice show={show} close={close} />
+      <NewInvoice
+        show={show}
+        close={close}
+        handleUpdateData={handleUpdateData}
+      />
       <Table invoices={invoices} getData={openDetails} getClient={getClient} />
 
       <InvoiceDetails

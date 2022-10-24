@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 interface Props {
   show: boolean;
   close: () => void;
+  handleUpdateData: () => void;
 }
 
 interface Prods {
@@ -25,7 +26,7 @@ interface Form {
 }
 
 export default function NewInvoice(props: Props) {
-  const { show, close } = props;
+  const { show, close, handleUpdateData } = props;
   const [products, setProducts] = useState<
     {
       idProduct: number;
@@ -165,9 +166,18 @@ export default function NewInvoice(props: Props) {
   };
 
   async function onSubmit(data: Form) {
+    handleUpdateData();
     const { discount, clientId, date } = data;
 
-    console.log(date);
+    let realDiscount;
+
+    console.log(discount.toString());
+
+    if (discount.toString() === "") {
+      realDiscount = 0;
+    } else {
+      realDiscount = discount;
+    }
 
     if (date.toString() === "" || invoiceProducts.length < 1) {
       if (date.toString() === "" && invoiceProducts.length > 0)
@@ -192,23 +202,15 @@ export default function NewInvoice(props: Props) {
 
       const total = subtotal - subtotal * (discount / 100);
 
-      console.log({
-        date,
-        subtotal,
-        discount,
-        total,
-        clientId,
-        invoiceProducts,
-      });
-
       await axios.post("http://localhost:4000/invoices", {
         clientId,
         date,
-        discount,
+        discount: realDiscount,
         total,
         subtotal,
         products: invoiceProducts,
       });
+      handleUpdateData();
 
       close();
     }
