@@ -3,19 +3,19 @@ import { useEffect, useRef, useState } from "react";
 import NewInvoiceView from "./newInvoiceView";
 import { useForm } from "react-hook-form";
 
+import { Client, Product } from "../../types";
+import { getNewInvoiceData } from "../../helpers";
+
 interface Props {
   show: boolean;
   close: () => void;
   handleUpdateData: () => void;
+  clients: Client[];
+  products: Product[];
 }
 
 interface Prods {
-  product: {
-    idProduct: number;
-    productName: string;
-    productPrice: string;
-  };
-
+  product: Product;
   quantity: number;
 }
 
@@ -26,34 +26,10 @@ interface Form {
 }
 
 export default function NewInvoice(props: Props) {
-  const { show, close, handleUpdateData } = props;
-  const [products, setProducts] = useState<
-    {
-      idProduct: number;
-      productName: string;
-      productPrice: string;
-    }[]
-  >([]);
+  const { show, close, handleUpdateData, clients, products } = props;
 
   const [invoiceProducts, setInvoiceProducts] = useState<Prods[]>([]);
-  const [clients, setClients] = useState([]);
   const { register, handleSubmit } = useForm<Form>();
-
-  useEffect(() => {
-    async function getData() {
-      const responseProducts = await axios.get(
-        `${process.env.REACT_APP_HOST}products`
-      );
-      const responseClients = await axios.get(
-        `${process.env.REACT_APP_HOST}clients`
-      );
-
-      setProducts(responseProducts.data);
-      setClients(responseClients.data);
-    }
-
-    getData();
-  }, []);
 
   const clear = () => {
     setInvoiceProducts([]);
@@ -85,16 +61,11 @@ export default function NewInvoice(props: Props) {
     );
 
     if (isProductIn) {
-      const index = aux.indexOf(isProductIn);
-
-      aux[index].quantity = aux[index].quantity + 1;
-
-      console.log("owo");
       const newArray = invoiceProducts.map((item) => {
         if (item.product.idProduct === isProductIn.product.idProduct) {
           return {
             ...item,
-            quantity: item.quantity++,
+            quantity: item.quantity + 1,
           };
         }
 
@@ -132,7 +103,6 @@ export default function NewInvoice(props: Props) {
       return item;
     });
 
-    console.log(newArray);
     setInvoiceProducts(newArray);
   };
 
@@ -144,8 +114,6 @@ export default function NewInvoice(props: Props) {
           const newProducts: Prods[] = invoiceProducts.filter(
             (prod) => prod.product.idProduct !== id
           );
-
-          console.log(newProducts);
 
           setInvoiceProducts(newProducts);
           aux = false;

@@ -5,14 +5,11 @@ import "./styles/global.css";
 import "./styles/app.scss";
 import { useShow } from "./hooks/useShow";
 import NewInvoice from "./components/newInvoice/newInvoice";
-import axios from "axios";
-import { Client, Invoice } from "./types";
+import { Client, Invoice, Product } from "./types";
 import InvoiceDetails from "./components/invoiceDetail";
-import { idText } from "typescript";
 import Navbar from "./components/navbar";
 import "./styles/newInvoice.scss";
-import dotenv from "dotenv";
-import { set } from "react-hook-form";
+import { getNewInvoiceData } from "./helpers";
 
 function App() {
   const { show, close, open } = useShow();
@@ -27,7 +24,7 @@ function App() {
 
   const [clients, setClients] = useState<Client[]>([]);
 
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<Invoice | null>(null);
 
   const [products, setProducts] = useState<any>([]);
 
@@ -41,42 +38,24 @@ function App() {
     }
   };
 
+  const invoicesSetter = (data: Invoice[]) => setInvoices(data);
+
+  const clientsSetter = (data: Client[]) => setClients(data);
+
+  const productsSetter = (data: Product[]) => setProducts(data);
+
   useEffect(() => {
-    async function getData() {
-      const response = await axios.get(`${process.env.REACT_APP_HOST}invoices`);
-
-      const responseClients = await axios.get(
-        `${process.env.REACT_APP_HOST}clients`
-      );
-
-      const responseProducts = await axios.get(
-        `${process.env.REACT_APP_HOST}products`
-      );
-
-      setClients(responseClients.data);
-
-      setInvoices(response.data);
-
-      setProducts(responseProducts.data);
-    }
-
-    if(!updateData){
-      getData()
-    }
-
-    getData();
+    getNewInvoiceData({ productsSetter, clientsSetter, invoicesSetter });
   }, [updateData]);
 
-  const openDetails = (info: any) => {
+  const openDetails = (info: Invoice) => {
+    console.log(info)
     setData(info);
-
     openInvoiceDt();
   };
 
   const getClient = (id: number) => {
     const client = clients.find((item) => item.idClient === id);
-    console.log(clients);
-    console.log(id);
     return client?.ClientName;
   };
 
@@ -98,14 +77,17 @@ function App() {
       <Navbar />
       <div>
         <button onClick={() => open()} type="button" className="newInvoice">
-          New Invoice
+          <b>New Invoice</b>
         </button>
       </div>
       <NewInvoice
         show={show}
         close={close}
         handleUpdateData={handleUpdateData}
+        clients={clients}
+        products={products}
       />
+
       <Table invoices={invoices} getData={openDetails} getClient={getClient} />
 
       <InvoiceDetails
@@ -118,4 +100,4 @@ function App() {
   );
 }
 
-export default App;
+export default React.memo(App);

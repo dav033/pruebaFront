@@ -14,3 +14,18 @@ export interface Client {
   PhoneNumber: string;
   Email: string;
 }
+
+export interface Product {
+    idProduct: number;
+    productName: string;
+    productPrice: string;
+    productDescription: string;
+}
+
+export interface Invoice_product {
+
+    invoiceId:number
+    productId:number
+    quantity:number
+
+}

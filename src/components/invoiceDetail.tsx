@@ -1,49 +1,43 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { getInvoiceDetailsData } from "../helpers";
+import { useMounted } from "../hooks/useMounted";
 import "../styles/invoiceDetails.scss";
+import { Invoice, Invoice_product, Product } from "../types";
 
 interface Props {
   show: boolean;
   close: () => void;
-  data: any;
-  products: any;
+  data: Invoice | null;
+  products: Product[];
 }
 
 export default function InvoiceDetails(props: Props) {
   const { show, close, data, products } = props;
 
-  const [items, setItems] = useState<any>([]);
+  const [items, setItems] = useState<Invoice_product[]>([]);
 
-  console.log(data);
+  const itemsSetter = (data: Invoice_product[]) => setItems(data);
 
   useEffect(() => {
-    async function getData() {
-      const response = await axios.get(
-        `${process.env.REACT_APP_HOST}invoices/${data.invoiceId}`
-      );
-
-      console.log(response.data);
-      setItems(response.data);
-    }
-
-    getData();
+    getInvoiceDetailsData({ data, itemsSetter });
   }, [data]);
 
   const getProductName = (id: number) => {
     const product = products.find((product: any) => id === product.idProduct);
 
-    console.log(product.productName);
-
-    return product.productName;
+    if (product) return product.productName;
   };
-  return show ? (
+
+  const { hasMounted } = useMounted();
+  return show && data && hasMounted ? (
     <div className="overlay">
       <div className="invoiceDetails">
         <AiOutlineClose onClick={() => close()} className="closeButton" />
-        <div className ="header"></div>
+        <div className="header"></div>
 
-        <div>
+        <div className="tableContainer">
           <table className="table">
             <thead>
               <tr>
@@ -54,13 +48,12 @@ export default function InvoiceDetails(props: Props) {
               </tr>
             </thead>
             <tbody>
-              {items.map((item: any) => {
+              {items.map((item) => {
                 return (
-                  <tr>
+                  <tr key={item.invoiceId}>
                     <td data-label="Invoice Number">{item.invoiceId}</td>
                     <td data-label="Product ID">{item.productId}</td>
                     <td data-label="Product Name">
-                      {" "}
                       {getProductName(item.productId)}
                     </td>
                     <td data-label="Quantity"> {item.quantity}</td>

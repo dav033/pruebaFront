@@ -1,16 +1,23 @@
 .overlay {
   .invoiceDetails {
     width: 45em;
-    height: 25em;
+    max-height: 27em;
+    min-height: 10em;
     background-color: #ebe7de;
     position: relative;
+    // padding-top: 0 ;
     padding: 0;
+    overflow: none;
+    display: flex;
+    flex-direction: column;
 
     .header {
-      background-color: #009879;
+      background-color: #38649c;
       position: absolute;
       height: 30px;
       top: 0;
+      width: 100% !important;
+      padding-bottom: 5px;
     }
 
     .closeButton {
@@ -24,19 +31,21 @@
       z-index: 10;
     }
 
-    div {
-      overflow: auto !important;
+    .tableContainer {
+      overflow: auto;
       width: 100%;
-      max-height: 75%;
-      height: 85%;
-      // background-color: green;
-      flex-grow: 5;
-      display: flex;
-      flex-direction: column;
-      overflow: auto !important;
-      // background-color: red;
+      height: 90%;
+      padding: 5px;
+      padding-top: 60px ;
+      //    height: 100vh ;
 
-      padding: 0;
+      table {
+        width: 100%;
+
+        th {
+          border-radius: 0;
+        }
+      }
     }
   }
 }

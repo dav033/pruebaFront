@@ -1,14 +1,10 @@
 import "../../styles/table.scss";
 import { AiFillInfoCircle } from "react-icons/ai";
+import { Invoice } from "../../types";
+import TableInfo from "../tableInfo";
+import SortedTable from "../sortedTable";
 interface Props {
-  invoices: {
-    clientId: string;
-    date: string;
-    discount: number;
-    invoiceId: number;
-    subtotal: number;
-    total: number;
-  }[];
+  invoices: Invoice[];
 
   getClient: (id: number) => string | undefined;
 
@@ -27,28 +23,18 @@ export default function Table(props: Props) {
           <th>Subtotal</th>
           <th>Discount</th>
           <th>Total</th>
-          <th>Info</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {invoices.map((invoice) => {
           return (
-            <tr key={invoice.invoiceId}>
-              <td data-label="Invoice Number">{invoice.invoiceId}</td>
-              <td data-label="Client">
-                {getClient(parseInt(invoice.clientId))}
-              </td>
-              <td data-label="Date">{invoice.date}</td>
-              <td data-label="Subtotal">{invoice.subtotal}</td>
-              <td data-label="Discount">{invoice.discount}%</td>
-              <td data-label="Total">{invoice.total}</td>
-              <td data-label="Info">
-                <AiFillInfoCircle
-                  style={{ fontSize: "20px", cursor: "pointer" }}
-                  onClick={() => getData(invoice)}
-                />
-              </td>
-            </tr>
+            <TableInfo
+              key={invoice.invoiceId}
+              invoice={invoice}
+              getClient={getClient}
+              getData={getData}
+            />
           );
         })}
       </tbody>

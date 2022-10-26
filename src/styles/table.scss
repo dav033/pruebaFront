@@ -6,12 +6,20 @@
   padding: 0;
   table-layout: fixed;
   color: black;
+  border-radius: 15px !important;
 
   tr th {
-    background-color: #009879;
+    background-color: #38649c;
     /* border: 1px solid #ddd; */
   }
 
+  th:last-child {
+    border-top-right-radius: 10px;
+  }
+
+  th:first-child {
+    border-top-left-radius: 10px;
+  }
   tr td {
     background-color: #f3f3f3;
   }
@@ -24,11 +32,21 @@
   }
 
   tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+    border-bottom: 2px solid #38649c;
   }
 
   tbody tr {
     border-bottom: 1px solid #dddddd;
+
+    background-color: white;
+
+    &:nth-of-type(odd) {
+      background: #eeeeee;
+    }
+
+    td {
+      background-color: transparent !important;
+    }
   }
 
   thead th {
@@ -37,6 +55,16 @@
     border-bottom: 1px solid white;
     color: white;
     /* background-color: #ddd; */
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .table {
+    th,
+    td {
+      font-size: 11px;
+   
+    }
   }
 }
 
