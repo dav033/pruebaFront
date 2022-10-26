@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { getInvoiceDetailsData } from "../helpers";

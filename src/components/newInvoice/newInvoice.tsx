@@ -1,10 +1,9 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import NewInvoiceView from "./newInvoiceView";
 import { useForm } from "react-hook-form";
 
 import { Client, Product } from "../../types";
-import { getNewInvoiceData } from "../../helpers";
 
 interface Props {
   show: boolean;
@@ -29,6 +28,7 @@ export default function NewInvoice(props: Props) {
   const { show, close, handleUpdateData, clients, products } = props;
 
   const [invoiceProducts, setInvoiceProducts] = useState<Prods[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const { register, handleSubmit } = useForm<Form>();
 
   const clear = () => {
@@ -134,12 +134,11 @@ export default function NewInvoice(props: Props) {
   };
 
   async function onSubmit(data: Form) {
+    setLoading(true);
     handleUpdateData();
     const { discount, clientId, date } = data;
 
     let realDiscount;
-
-    console.log(discount.toString());
 
     if (discount.toString() === "") {
       realDiscount = 0;
@@ -158,8 +157,6 @@ export default function NewInvoice(props: Props) {
         alert("Complete all fields");
       }
     } else {
-      //const date = new Date(ml).toDateString();
-
       let subtotal = 0;
 
       invoiceProducts.forEach((item) => {
@@ -182,11 +179,8 @@ export default function NewInvoice(props: Props) {
 
       close();
     }
+    setLoading(false);
   }
-
-  useEffect(() => {
-    console.log(show);
-  }, [show]);
 
   return show ? (
     <NewInvoiceView
@@ -200,6 +194,7 @@ export default function NewInvoice(props: Props) {
       invoiceProducts={invoiceProducts}
       add={add}
       subtract={subtract}
+      loading={loading}
     />
   ) : null;
 }

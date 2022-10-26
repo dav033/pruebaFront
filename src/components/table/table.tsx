@@ -1,8 +1,6 @@
 import "../../styles/table.scss";
-import { AiFillInfoCircle } from "react-icons/ai";
 import { Invoice } from "../../types";
 import TableInfo from "../tableInfo";
-import SortedTable from "../sortedTable";
 interface Props {
   invoices: Invoice[];
 

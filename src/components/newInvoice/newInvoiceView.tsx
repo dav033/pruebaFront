@@ -5,6 +5,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import ProductsList from "../productsList";
 import { motion, AnimatePresence } from "framer-motion";
 import { Client } from "../../types";
+import Spinner from "../spinner";
 
 interface Props {
   close: () => void;
@@ -40,6 +41,8 @@ interface Props {
   add: (id: number) => void;
 
   subtract: (id: number) => void;
+
+  loading: boolean;
 }
 
 export default function NewInvoice(props: Props) {
@@ -54,11 +57,8 @@ export default function NewInvoice(props: Props) {
     invoiceProducts,
     add,
     subtract,
+    loading,
   } = props;
-
-  // useEffect(() => {
-  //   console.log("invoiceProducts desde view");
-  // }, [invoiceProducts]);
 
   return (
     <AnimatePresence>
@@ -86,6 +86,7 @@ export default function NewInvoice(props: Props) {
             },
           }}
         >
+          <Spinner spinnerValue={loading} />
           <div className="modalHeader">New Invoice</div>
           <AiOutlineClose onClick={() => close()} className="closeButton" />
 

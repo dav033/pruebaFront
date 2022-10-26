@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { BsTrashFill } from "react-icons/bs";
 import { GrAdd, GrSubtract } from "react-icons/gr";
 
@@ -18,11 +16,9 @@ interface Props {
 }
 
 export default function ProductsList(props: Props) {
-  const { invoiceProducts, add , subtract} = props;
+  const { invoiceProducts, add, subtract } = props;
 
-  //   useEffect(() => {
-  //     console.log("invoiceProducts");
-  //   }, [invoiceProducts]);
+
 
   return (
     <div className="prueba" id="scroll">
@@ -33,7 +29,12 @@ export default function ProductsList(props: Props) {
               {item.product.productName}
             </div>
             <span>
-              <GrSubtract className="operationIcon" onClick={() => {subtract(item.product.idProduct)}} />
+              <GrSubtract
+                className="operationIcon"
+                onClick={() => {
+                  subtract(item.product.idProduct);
+                }}
+              />
               <b>{item.quantity}</b>
               <GrAdd
                 className="operationIcon"

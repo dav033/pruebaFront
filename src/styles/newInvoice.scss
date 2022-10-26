@@ -50,7 +50,6 @@
       justify-content: space-between;
       flex-direction: row;
       align-items: center;
-      // background-color: red;
 
       .submitButton {
         height: 2em;
@@ -65,7 +64,6 @@
         justify-content: space-evenly;
         height: 100% !important;
 
-        //background-color: red;
         div {
           display: flex;
           flex-direction: column;
@@ -98,12 +96,10 @@
         height: 100% !important;
         flex-direction: column;
         align-items: center;
-        // background-color: blue;
 
         .prueba {
           width: 100%;
           max-height: 150px;
-          // background-color: green;
           flex-grow: 5;
           display: flex;
           flex-direction: column;
@@ -156,7 +152,6 @@
             flex-direction: column;
             width: 14em;
             padding: 0;
-            //background-color: blue;
 
             div {
               display: flex;

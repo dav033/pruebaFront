@@ -7,7 +7,6 @@
   position: sticky !important;
   min-width: 3px;
   max-width: 350px;
-  //  border-top: solid 1px black;
   padding: 0 !important;
   overflow-y: auto;
   margin: 0;
@@ -24,13 +23,11 @@
     height: 100vh;
     background-color: $dark2;
     position: fixed;
-    // top: 0;
     left: 0;
     z-index: 2;
     overflow: hidden;
     transition: width 0.5s ease;
     white-space: nowrap;
-    //padding-left: 10px;
 
     .profileContainer {
       width: 100%;
@@ -127,6 +124,4 @@
   font-size: 22px;
   margin-right: 5px;
   color: gray !important;
-  //   border: solid 1px black;
-  //   background-color: #28B463;
 }

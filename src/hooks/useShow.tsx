@@ -1,18 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useState } from "react";
 
 export const useShow = () => {
-  const [show, setShow] = useState<boolean>(false)
+  const [show, setShow] = useState<boolean>(false);
 
-  function open () {
-    setShow(true)
+  function open() {
+    setShow(true);
   }
   const close = () => {
-    setShow(false)
-  }
+    setShow(false);
+  };
 
-  useEffect(() => {
-    console.log(show)
-  }, [show])
-
-  return { show, open, close }
-}
+  return { show, open, close };
+};

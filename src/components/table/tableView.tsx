@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import "../../styles/table.css";
 
 interface Props {
@@ -17,12 +16,6 @@ interface Props {
 }
 export default function TableView(props: Props) {
   const { invoices, getClient, getData } = props;
-
-  // const [data, setData] = useState<any>(null);
-
-  // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
 
   return (
     <table className="table">

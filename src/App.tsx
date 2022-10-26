@@ -49,7 +49,6 @@ function App() {
   }, [updateData]);
 
   const openDetails = (info: Invoice) => {
-    console.log(info)
     setData(info);
     openInvoiceDt();
   };
@@ -58,19 +57,6 @@ function App() {
     const client = clients.find((item) => item.idClient === id);
     return client?.ClientName;
   };
-
-  useEffect(() => {
-    const app = document.getElementById("app");
-    const over = document.getElementById("owo");
-
-    if (show || showInvoiceDt) {
-      if (app) app.style.overflow = "hidden";
-      if (over) over.style.display = "none";
-    } else {
-      if (app) app.style.overflow = "auto";
-      if (over) over.style.display = "flex";
-    }
-  }, [show, showInvoiceDt]);
 
   return (
     <div className="App" id="app">
